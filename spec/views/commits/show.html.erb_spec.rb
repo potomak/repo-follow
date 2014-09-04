@@ -13,7 +13,7 @@ RSpec.describe "commits/show", :type => :view do
     ))
   end
 
-  it "renders attributes in <p>" do
+  it "renders attributes" do
     render
     expect(rendered).to match(/Sha/)
     expect(rendered).to match(/MyText/)

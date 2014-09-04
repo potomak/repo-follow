@@ -4,4 +4,11 @@ class Commit < ActiveRecord::Base
   def to_param
     self.sha
   end
+
+  def self.find_or_create_by_sha(sha)
+    commit = self.find_by_sha(sha)
+    return commit if commit
+
+    self.create(sha: sha)
+  end
 end
