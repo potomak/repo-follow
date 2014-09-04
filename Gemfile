@@ -35,9 +35,11 @@ gem 'spring',        group: :development
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
 group :development, :test do
   gem 'rspec-rails', '~> 3.0.0'
+  gem 'dotenv-rails'
 end
+
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'octokit', '~> 3.0'

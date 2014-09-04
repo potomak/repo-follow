@@ -1,0 +1,15 @@
+<h2><%= @commit.sha %></h2>
+
+<pre>
+<%= @commit.message %>
+</pre>
+
+<p><%= image_tag @commit.author_image, width: 32 %> <%= @commit.author %></p>
+
+<% if @commit.committer %>
+  <p><%= image_tag @commit.committer_image, width: 32 %> <%= @commit.committer %></p>
+<% end %>
+
+<% if @commit.repository %>
+  <%= link_to @commit.repository.full_name, repository_path(@commit.repository) %>
+<% end %>

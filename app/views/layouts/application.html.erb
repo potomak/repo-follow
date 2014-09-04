@@ -8,7 +8,35 @@
 </head>
 <body>
 
-<%= yield %>
+  <header>
+    <div class="wrapper clearfix">
+      <h1 class="title"><%= link_to 'Repo follow', root_path %></h1>
+      <div class="session">
+        <% if current_user %>
+          <p><%= image_tag current_user.image, width: 32 %> <%= current_user.name %></p>
+          <p><%= link_to 'Sign out', sign_out_path, method: :delete %></p>
+        <% else %>
+          <p><%= link_to 'Sign in with GitHub', sign_in_path(provider: :github) %></p>
+        <% end %>
+      </div>
+    </div>
+  </header>
+
+  <% flash.each do |key, msg| %>
+    <div class="wrapper <%= key %>">
+      <p><%= msg %></p>
+    </div>
+  <% end %>
+
+  <div class="wrapper">
+    <%= yield %>
+  </div>
+
+  <footer>
+    <div class="wrapper">
+      <p>Repo follow by <%= link_to 'Giovanni Cappellotto', 'http://twitter.com/johnnyaboh' %></p>
+    </div>
+  </footer>
 
 </body>
 </html>
