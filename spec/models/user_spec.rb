@@ -20,4 +20,16 @@ RSpec.describe User, :type => :model do
       end
     end
   end
+
+  describe '#github_client' do
+    let(:user) { User.create(token: 'test') }
+
+    it 'returns a Octokit::Client' do
+      expect(user.github_client).to be_a(Octokit::Client)
+    end
+
+    it 'has user\'s token' do
+      expect(user.github_client.access_token).to eq(user.token)
+    end
+  end
 end

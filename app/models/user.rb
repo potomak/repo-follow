@@ -13,4 +13,8 @@ class User < ActiveRecord::Base
       token: auth_hash.credentials.try(:token)
     )
   end
+
+  def github_client
+    Octokit::Client.new(access_token: self.token)
+  end
 end

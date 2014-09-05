@@ -27,7 +27,8 @@ RSpec.describe SessionsController, :type => :controller do
   end
 
   describe "GET destroy" do
-    before { session[:user_id] = 1 }
+    let(:user) { User.create }
+    before { session[:user_id] = user.id }
 
     it "redirects to /" do
       get :destroy

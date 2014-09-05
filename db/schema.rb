@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140904194808) do
+ActiveRecord::Schema.define(version: 20140905091603) do
 
   create_table "commits", force: true do |t|
     t.string   "sha"
@@ -31,6 +31,8 @@ ActiveRecord::Schema.define(version: 20140904194808) do
     t.string   "full_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "owner"
+    t.string   "owner_image"
   end
 
   add_index "repositories", ["full_name"], name: "index_repositories_on_full_name", unique: true
