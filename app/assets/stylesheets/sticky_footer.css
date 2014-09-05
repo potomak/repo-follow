@@ -1,0 +1,14 @@
+html, body {
+  height: 100%;
+}
+
+#container {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -4em;
+}
+
+footer, #push {
+  height: 3em;
+}

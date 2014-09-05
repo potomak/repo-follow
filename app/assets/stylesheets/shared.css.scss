@@ -12,9 +12,13 @@ a:visited {
   color: darken($link-color, 5%);
 }
 
+footer {
+  text-align: right;
+}
+
 .wrapper {
   width: 800px;
-  margin: 10px 0 0 10px;
+  margin-left: 10px;
 }
 
 .clearfix {
