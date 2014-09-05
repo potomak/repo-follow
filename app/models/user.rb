@@ -17,4 +17,8 @@ class User < ActiveRecord::Base
   def github_client
     Octokit::Client.new(access_token: self.token)
   end
+
+  def follows(repository)
+    repositories.exists?(id: repository.id)
+  end
 end

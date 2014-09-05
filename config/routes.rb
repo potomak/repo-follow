@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   resources :commits, only: :show
-  resources :repositories, only: :show, constraints: { id: /[^\/]+\/[^\/]+/ }
+
+  scope format: false, constraints: { id: /[^\/]+\/[^\/]+/ } do
+    get '/repositories/*id', to: 'repositories#show', as: :repository
+    post '/repositories/*id/follow', to: 'repositories#follow', as: :follow_repository
+    post '/repositories/*id/unfollow', to: 'repositories#unfollow', as: :unfollow_repository
+  end
 
   get '/sign_in/:provider', to: 'sessions#new', as: :sign_in
   match '/auth/:provider/callback', to: 'sessions#create', via: [:get, :post]

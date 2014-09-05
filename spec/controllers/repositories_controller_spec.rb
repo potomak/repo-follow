@@ -31,4 +31,51 @@ RSpec.describe RepositoriesController, :type => :controller do
     end
   end
 
+  describe "POST follow" do
+    it 'redirects to /' do
+      repository = Repository.create! valid_attributes
+      post :follow, {:id => repository.to_param}
+      expect(response).to redirect_to(root_url)
+    end
+
+    context 'with a valid session' do
+      it "assigns the requested repository as @repository" do
+        repository = Repository.create! valid_attributes
+        post :follow, {:id => repository.to_param}, valid_session
+        expect(assigns(:repository)).to eq(repository)
+      end
+
+      it "adds current_user to repository's followers" do
+        repository = Repository.create! valid_attributes
+        expect {
+          post :follow, {:id => repository.to_param}, valid_session
+        }.to change { repository.users.count }.by(1)
+      end
+    end
+  end
+
+  describe "POST unfollow" do
+    it 'redirects to /' do
+      repository = Repository.create! valid_attributes
+      post :unfollow, {:id => repository.to_param}
+      expect(response).to redirect_to(root_url)
+    end
+
+    context 'with a valid session' do
+      it "assigns the requested repository as @repository" do
+        repository = Repository.create! valid_attributes
+        post :unfollow, {:id => repository.to_param}, valid_session
+        expect(assigns(:repository)).to eq(repository)
+      end
+
+      it "adds current_user to repository's followers" do
+        repository = Repository.create! valid_attributes
+        repository.users << current_user
+        expect {
+          post :unfollow, {:id => repository.to_param}, valid_session
+        }.to change { repository.users.count }.by(-1)
+      end
+    end
+  end
+
 end

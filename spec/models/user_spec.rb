@@ -32,4 +32,23 @@ RSpec.describe User, :type => :model do
       expect(user.github_client.access_token).to eq(user.token)
     end
   end
+
+  describe '#follows' do
+    let(:user) { User.create(token: 'test') }
+    let(:repository) { Repository.create }
+
+    context 'with association between user and repository' do
+      before { user.repositories << repository }
+
+      it 'returns true' do
+        expect(user.follows(repository)).to be true
+      end
+    end
+
+    context 'without association' do
+      it 'returns false' do
+        expect(user.follows(repository)).to_not be true
+      end
+    end
+  end
 end
