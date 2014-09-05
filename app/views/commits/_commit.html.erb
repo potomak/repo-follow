@@ -1,0 +1,5 @@
+<div id="<%= dom_id(commit) %>" class="commit">
+  <p><%= link_to truncate(commit.sha, length: 7, omission: ''), commit_path(commit) %></p>
+  <p><%= truncate(commit.title, length: 80) %></p>
+  <p>Author: <%= image_tag commit.author_image, width: 32 %> <%= commit.author %></p>
+</div>

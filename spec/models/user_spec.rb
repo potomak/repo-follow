@@ -35,19 +35,19 @@ RSpec.describe User, :type => :model do
 
   describe '#follows' do
     let(:user) { User.create(token: 'test') }
-    let(:repository) { Repository.create }
+    let(:branch) { Branch.create }
 
-    context 'with association between user and repository' do
-      before { user.repositories << repository }
+    context 'with association between user and branch' do
+      before { user.branches << branch }
 
       it 'returns true' do
-        expect(user.follows(repository)).to be true
+        expect(user.follows(branch)).to be true
       end
     end
 
     context 'without association' do
       it 'returns false' do
-        expect(user.follows(repository)).to_not be true
+        expect(user.follows(branch)).to_not be true
       end
     end
   end

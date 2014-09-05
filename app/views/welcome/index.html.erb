@@ -1,22 +1,7 @@
-<p>Follow your favorite GitHub repositories.</p>
+<% if current_user %>
+  <%= render partial: 'timeline' %>
+<% else %>
+  <p>Follow your favorite GitHub repositories.</p>
 
-<h2>This is a title h2</h2>
-
-<h3>This is a title h3</h3>
-
-<h4>This is a title h4</h4>
-
-<h5>This is a title h5</h5>
-
-<p>This is a paragraph</p>
-
-<p><strong>This is strong</strong></p>
-
-<p><em>This is emphatized</em></p>
-
-<ul>
-  <li>primary color</li>
-  <li><a href="#">link color</a></li>
-  <li class="alert">alert color</li>
-  <li class="notice">notice color</li>
-</ul>
+  <%= render partial: 'html_elements' %>
+<% end %>

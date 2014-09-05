@@ -1,8 +1,8 @@
 class Repository < ActiveRecord::Base
   REFRESH_AFTER = 1.day
 
-  has_and_belongs_to_many :users
   has_many :commits
+  has_many :branches
 
   def self.find_and_update_or_create_by_full_name(github_client, full_name)
     repository = self.find_by_full_name(full_name)
@@ -11,23 +11,37 @@ class Repository < ActiveRecord::Base
       if repository.needs_refresh?
         remote_repository = self.fetch_by_full_name(github_client, full_name)
         repository.update_attributes(remote_repository.attributes)
+        remote_branches = repository.fetch_branches(github_client)
+        remote_branches.map(&:save)
       end
       return repository
     end
 
-    remote_repository = self.fetch_by_full_name(github_client, full_name)
-    remote_repository.save
-    remote_repository
+    repository = self.fetch_by_full_name(github_client, full_name)
+    repository.save
+    remote_branches = repository.fetch_branches(github_client)
+    remote_branches.map(&:save)
+    repository
   end
 
   def self.fetch_by_full_name(github_client, full_name)
-    github_repository = github_client.repository(full_name)
+    remote_repository = github_client.repository(full_name)
 
     self.new(
-      full_name: github_repository.full_name,
-      owner: github_repository.owner.login,
-      owner_image: github_repository.owner.avatar_url
+      full_name: remote_repository.full_name,
+      owner: remote_repository.owner.login,
+      owner_image: remote_repository.owner.avatar_url
     )
+  end
+
+  def fetch_branches(github_client)
+    remote_branches = github_client.branches(self.full_name)
+
+    remote_branches.map do |remote_branch|
+      branch = Branch.find_or_initialize_by(name: remote_branch.name)
+      branch.assign_attributes(sha: remote_branch.sha, repository: self)
+      branch
+    end
   end
 
   def to_param

@@ -11,7 +11,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140905091603) do
+ActiveRecord::Schema.define(version: 20140905152132) do
+
+  create_table "branches", force: true do |t|
+    t.string   "name"
+    t.string   "sha"
+    t.integer  "repository_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "branches", ["repository_id"], name: "index_branches_on_repository_id"
+
+  create_table "branches_commits", id: false, force: true do |t|
+    t.integer "branch_id", null: false
+    t.integer "commit_id", null: false
+  end
+
+  add_index "branches_commits", ["commit_id", "branch_id"], name: "index_branches_commits_on_commit_id_and_branch_id", unique: true
+
+  create_table "branches_users", id: false, force: true do |t|
+    t.integer "branch_id", null: false
+    t.integer "user_id",   null: false
+  end
+
+  add_index "branches_users", ["user_id", "branch_id"], name: "index_branches_users_on_user_id_and_branch_id", unique: true
 
   create_table "commits", force: true do |t|
     t.string   "sha"
@@ -36,13 +60,6 @@ ActiveRecord::Schema.define(version: 20140905091603) do
   end
 
   add_index "repositories", ["full_name"], name: "index_repositories_on_full_name", unique: true
-
-  create_table "repositories_users", id: false, force: true do |t|
-    t.integer "repository_id", null: false
-    t.integer "user_id",       null: false
-  end
-
-  add_index "repositories_users", ["user_id", "repository_id"], name: "index_repositories_users_on_user_id_and_repository_id", unique: true
 
   create_table "users", force: true do |t|
     t.string   "uid"

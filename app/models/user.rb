@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  has_and_belongs_to_many :repositories
+  has_and_belongs_to_many :branches
+  has_many :commits, through: :branches
 
   def self.find_or_create_from_auth_hash(auth_hash)
     user = self.find_by_uid(auth_hash[:uid])
@@ -18,7 +19,7 @@ class User < ActiveRecord::Base
     Octokit::Client.new(access_token: self.token)
   end
 
-  def follows(repository)
-    repositories.exists?(id: repository.id)
+  def follows(branch)
+    branches.exists?(id: branch.id)
   end
 end

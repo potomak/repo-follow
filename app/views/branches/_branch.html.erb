@@ -1,0 +1,10 @@
+<p class="clearfix">
+  <%= branch.name %>
+  <span class="branch-action">
+    <% if current_user.follows(branch) %>
+      <%= link_to 'Unfollow', unfollow_branch_path(@repository, branch), method: :post %>
+    <% else %>
+      <%= link_to 'Follow', follow_branch_path(@repository, branch), method: :post %>
+    <% end %>
+  </span>
+</p>

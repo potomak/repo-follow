@@ -2,11 +2,13 @@ require 'rails_helper'
 
 RSpec.describe Repository, :type => :model do
   describe '::find_and_update_or_create_by_full_name' do
-    let(:octokit_result) { double(full_name: 'test/repo', owner: double(login: 'test', avatar_url: 'image_url')) }
+    let(:remote_branches) { [double(name: 'master', sha: '123'), double(name: 'feature/test', sha: '234')] }
     let(:github_client) { Octokit::Client.new }
 
+    before { allow(github_client).to receive(:branches).and_return(remote_branches) }
+
     context 'with repository' do
-      let!(:repository) { Repository.create(full_name: 'test/repo') }
+      let(:repository) { Repository.create(full_name: 'test/repo') }
 
       it 'returns repository' do
         allow(Repository).to receive(:fetch_by_full_name).and_return(repository)
@@ -53,6 +55,22 @@ RSpec.describe Repository, :type => :model do
     it 'makes a request to GitHub\'s repositories API' do
       expect(github_client).to receive(:repository).with('test/repo').and_return(octokit_result)
       Repository.fetch_by_full_name(github_client, 'test/repo')
+    end
+  end
+
+  describe '#fetch_branches' do
+    let(:repository) { Repository.create(full_name: 'test/repo') }
+    let(:octokit_result) { [double(name: 'master', sha: '123'), double(name: 'feature/test', sha: '234')] }
+    let(:github_client) { Octokit::Client.new }
+
+    it 'returns a new list of Branches' do
+      allow(github_client).to receive(:branches).and_return(octokit_result)
+      expect(repository.fetch_branches(github_client).first).to be_a(Branch)
+    end
+
+    it 'makes a request to GitHub\'s branches API' do
+      expect(github_client).to receive(:branches).with('test/repo').and_return(octokit_result)
+      repository.fetch_branches(github_client)
     end
   end
 

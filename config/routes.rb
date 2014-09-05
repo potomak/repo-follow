@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   resources :commits, only: :show
 
+  scope format: false, constraints: { repository_id: /[^\/]+\/[^\/]+/, id: /([^\/]+(\/[^\/]+)*)+/ } do
+    post '/branches/*repository_id/*id/follow', to: 'branches#follow', as: :follow_branch
+    post '/branches/*repository_id/*id/unfollow', to: 'branches#unfollow', as: :unfollow_branch
+  end
+
   scope format: false, constraints: { id: /[^\/]+\/[^\/]+/ } do
     get '/repositories/*id', to: 'repositories#show', as: :repository
-    post '/repositories/*id/follow', to: 'repositories#follow', as: :follow_repository
-    post '/repositories/*id/unfollow', to: 'repositories#unfollow', as: :unfollow_repository
   end
 
   get '/sign_in/:provider', to: 'sessions#new', as: :sign_in

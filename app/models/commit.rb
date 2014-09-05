@@ -11,4 +11,8 @@ class Commit < ActiveRecord::Base
 
     self.create(sha: sha)
   end
+
+  def title
+    self.message.split("\n").first
+  end
 end
