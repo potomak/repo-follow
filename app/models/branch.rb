@@ -14,8 +14,11 @@ class Branch < ActiveRecord::Base
       commit = Commit.find_or_initialize_by(sha: remote_commit.sha)
       commit.assign_attributes(
         message: remote_commit.commit.message,
+        date: remote_commit.commit.author.date,
         author: remote_commit.commit.author.name,
         author_image: remote_commit.author.avatar_url,
+        author: remote_commit.commit.committer.name,
+        author_image: remote_commit.committer.avatar_url,
         repository: self.repository
       )
       commit.branches << self unless self.commits.exists?(commit)

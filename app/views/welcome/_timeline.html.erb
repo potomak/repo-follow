@@ -1,5 +1,5 @@
-<% unless current_user.commits.empty? %>
-  <%= render current_user.commits %>
+<% unless @commits.empty? %>
+  <%= render @commits %>
 <% else %>
   <p>Start following some branches to see their commits listed here.</p>
 <% end %>

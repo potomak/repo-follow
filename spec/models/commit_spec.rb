@@ -1,21 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Commit, :type => :model do
-  describe '::find_or_create_by_sha' do
-    context 'with commit' do
-      let!(:commit) { Commit.create(sha: '123') }
+  describe '#title' do
+    let(:commit) { Commit.new(message: "A title\n\nA description.") }
 
-      it 'returns commit' do
-        expect(Commit.find_or_create_by_sha('123')).to eq(commit)
-      end
-    end
-
-    context 'without commit' do
-      it 'creates a new commit' do
-        expect {
-          Commit.find_or_create_by_sha('123')
-        }.to change { Commit.count }.by(1)
-      end
+    it 'returns message until first \n' do
+      expect(commit.title).to eq('A title')
     end
   end
 end

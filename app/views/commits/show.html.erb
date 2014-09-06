@@ -1,4 +1,4 @@
-<h2><%= @commit.sha %></h2>
+<h2><%= truncate(@commit.sha, length: 7, omission: '') %></h2>
 
 <pre>
 <%= @commit.message %>

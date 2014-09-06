@@ -4,7 +4,18 @@ RSpec.describe Branch, :type => :model do
   describe '#fetch_and_update_or_create_commits' do
     let(:repository) { Repository.create(full_name: 'test/repo') }
     let(:branch) { Branch.create(name: 'master', repository: repository) }
-    let(:remote_commits) { [double(sha: '123', commit: double(author: double(name: 'John Doe'), message: 'commit message'), author: double(avatar_url: 'image_url'))] }
+    let(:remote_commits) { [
+      double(
+        sha: '123',
+        commit: double(
+          author: double(name: 'John Doe', date: Time.now),
+          committer: double(name: 'John Doe'),
+          message: 'commit message'
+        ),
+        author: double(avatar_url: 'image_url'),
+        committer: double(avatar_url: 'image_url')
+      )
+    ] }
     let(:github_client) { Octokit::Client.new }
 
     it 'makes a request to GitHub\'s commits API' do

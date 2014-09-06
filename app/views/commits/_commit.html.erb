@@ -1,5 +1,11 @@
 <div id="<%= dom_id(commit) %>" class="commit">
-  <p><%= link_to truncate(commit.sha, length: 7, omission: ''), commit_path(commit) %></p>
+  <div class="clearfix">
+    <span class="header">
+      <%= link_to truncate(commit.sha, length: 7, omission: ''), commit_path(commit) %>
+      <%= link_to commit.repository.full_name, repository_path(commit.repository) %>
+    </span>
+    <span class="date" title="<%= commit.date %>"><%= time_ago_in_words(commit.date) if commit.date %> ago</span>
+  </div>
   <p><%= truncate(commit.title, length: 80) %></p>
-  <p>Author: <%= image_tag commit.author_image, width: 32 %> <%= commit.author %></p>
+  <p class="author"><%= image_tag commit.author_image, width: 32 %> <%= commit.author %></p>
 </div>

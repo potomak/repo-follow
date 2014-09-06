@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140905152132) do
+ActiveRecord::Schema.define(version: 20140906103635) do
 
   create_table "branches", force: true do |t|
     t.string   "name"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20140905152132) do
     t.integer  "repository_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "date"
   end
 
   add_index "commits", ["repository_id"], name: "index_commits_on_repository_id"
